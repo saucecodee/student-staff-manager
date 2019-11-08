@@ -2,6 +2,7 @@ const {
   createStudent,
   getStudent,
   getStudents,
+  getStudentsCount,
   editStudent,
   deleteStudent,
 } = require('../services/studentServices');
@@ -22,6 +23,11 @@ class StudentContoller {
   async getStudents(req, res, next) {
     let data = await getStudents();
     res.status(200).send(response('All Students', data));
+  }
+
+  async getStudentsCount(req, res, next) {
+    let count = await getStudentsCount();
+    res.status(200).send(response('All Students count', count));
   }
 
   async editStudent(req, res, next) {

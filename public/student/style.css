@@ -289,3 +289,22 @@ main h2 {
   display: none;
   margin: 80px auto;
 }
+
+.jumbotron{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.jumbotron .box {
+  background: rgba(54, 164, 238, 0.1);
+  width: 32%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+}
+
+.jumbotron .box h1{
+  color: #36a4ee;
+  font-size: 80px;
+}
+

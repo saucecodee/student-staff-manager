@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {
   createStudent,
   getStudents,
+  getStudentsCount,
   getStudent,
   editStudent,
   deleteStudent,
@@ -10,6 +11,7 @@ const {
 module.exports = function () {
   router.post('/', createStudent);
   router.get('/', getStudents);
+  router.get('/count', getStudentsCount);
   router.get('/:studentId', getStudent);
   router.put('/:studentId', editStudent);
   router.delete('/:studentId', deleteStudent);

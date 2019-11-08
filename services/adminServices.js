@@ -27,6 +27,10 @@ class AdminsService {
     return await Admin.find({});
   }
 
+  async getAdminsCount() {
+    return await Admin.find({}).count();
+  }
+
   async getAdmin(adminId) {
     const admin = await Admin.findOne({ _id: adminId });
 

@@ -2,6 +2,7 @@ const {
   createAdmin,
   signinAdmin,
   getAdmins,
+  getAdminsCount,
   getAdmin,
   deleteAdmin,
   editAdmin,
@@ -25,6 +26,11 @@ class AdminContoller {
   async getAdmins(req, res, next) {
     const admins = await getAdmins();
     res.status(200).send(response("All Admins", admins));
+  }
+
+  async getAdminsCount(req, res, next) {
+    const count = await getAdminsCount();
+    res.status(200).send(response("All Admins count", count));
   }
 
   async getAdmin(req, res, next) {

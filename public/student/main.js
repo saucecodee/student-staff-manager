@@ -6,7 +6,7 @@ let mainLoader = document.querySelector("#main-loader").style
 
 function init() {
      const path = window.location.pathname;
-     if (path == "/student/all-students") {
+     if (path == "/student/") {
           showStudents();
      } else {
           console.log("nothing");
@@ -70,6 +70,14 @@ async function addStudent() {
      modalLoader.display = "none"
 }
 
+async function getCount() {
+     let student = await fetch(url + "students/count").then(data => data.json());
+     let admin = await fetch(url + "admins/count").then(data => data.json());
+     
+     document.querySelector("#noOfAdmins").innerHTML = admin.data
+     document.querySelector("#noOfStudents").innerHTML = student.data
+}
+
 //////////////////////////////////////////////////////////////////
 //        Helpers
 //////////////////////////////////////////////////////////////////
@@ -121,6 +129,7 @@ async function showStudents() {
      });
 
      document.querySelector("#students-table").innerHTML = studentDivs;
+     getCount()
      mainLoader.display = "none"
 }
 
@@ -174,6 +183,6 @@ async function login() {
 
      console.log(result)
 
-if (result.status == 200) window.location.replace("/student/");
+     if (result.status == 200) window.location.replace("/student/");
 }
 

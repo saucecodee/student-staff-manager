@@ -21,6 +21,12 @@ class StudentService {
     return students;
   }
 
+  async getStudentsCount() {
+    const students = await Student.find({}).count();
+
+    return students;
+  }
+
   async editStudent(_id, data) {
     const student = await Student.findOneAndUpdate({ _id }, data);
 
