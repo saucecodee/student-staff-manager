@@ -5,7 +5,7 @@ const {
   getAdmin,
   deleteAdmin,
   editAdmin,
-} = require("../services/AdminServices");
+} = require("../services/adminServices");
 
 const { response } = require("../helpers/messages");
 const CustomError = require('../helpers/CustomError')
