@@ -218,6 +218,29 @@ header ul li {
   border: 1px solid #c7c7c7;
 }
 
+.login-box .but {
+  height: 40px;
+  cursor: pointer;
+}
+
+.login-box .but img{
+  display: none;
+}
+
+.login-box .loading {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0px;
+  cursor: pointer;
+}
+
+.login-box .loading img{
+  display: block;
+  height: 40px;
+}
+
 /* ------------------------------------- */
 /*             Dashboard                 */
 /* ------------------------------------- */

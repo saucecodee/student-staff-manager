@@ -161,6 +161,8 @@ function closeModal() {
 //////////////////////////////////////////////////////////////////
 
 async function login() {
+     document.querySelector("button").classList.add("loading")
+
      const email = document.querySelector("#admin-email").value
      const password = document.querySelector("#admin-password").value
 
@@ -172,6 +174,6 @@ async function login() {
 
      console.log(result)
 
-     if (result.status == 200) window.location.replace("/student/");
+if (result.status == 200) window.location.replace("/student/");
 }
 

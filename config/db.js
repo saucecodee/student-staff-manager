@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-// const uri = process.env.MONGODB_URI || "mongodb+srv://admin:healthie@healthie-1jcqq.mongodb.net/test?retryWrites=true&w=majority"
-const uri = "mongodb://127.0.0.1:27017/schoolProject"
+// const uri = "mongodb://127.0.0.1:27017/schoolProject"
+const uri = "mongodb+srv://admin:admin@cluster0-zdljh.mongodb.net/test?retryWrites=true&w=majority"
 
 const options = {
   useNewUrlParser: true,
