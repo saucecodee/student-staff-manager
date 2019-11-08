@@ -5,7 +5,7 @@ const {
   getStudent,
   editStudent,
   deleteStudent,
-} = require('../../controllers/StudentController');
+} = require('../../controllers/studentController');
 
 module.exports = function () {
   router.post('/', createStudent);
