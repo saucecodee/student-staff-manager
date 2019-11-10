@@ -29,7 +29,15 @@ const StudentSchema = new Schema(
     },
     yearOfGrad: {
       type: String,
-      required: [true, "year O fGrad is required"],
+      required: [true, "year Of fGrad is required"],
+    },
+    feesStatus: {
+      type: String,
+      default: "not paid",
+    },
+    gradStatus: {
+      type: String,
+      default: "pending",
     }
   },
   {

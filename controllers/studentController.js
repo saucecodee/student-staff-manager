@@ -3,6 +3,7 @@ const {
   getStudent,
   getStudents,
   getStudentsCount,
+  getStudentsVerifiedCount,
   editStudent,
   deleteStudent,
 } = require('../services/studentServices');
@@ -28,6 +29,11 @@ class StudentContoller {
   async getStudentsCount(req, res, next) {
     let count = await getStudentsCount();
     res.status(200).send(response('All Students count', count));
+  }
+
+  async getStudentsVerifiedCount(req, res, next) {
+    let count = await getStudentsVerifiedCount();
+    res.status(200).send(response('All verified Students count', count));
   }
 
   async editStudent(req, res, next) {

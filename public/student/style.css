@@ -21,6 +21,16 @@ table {
   width: 100%;
 }
 
+.green{
+  color: #23a823;
+  font-weight: 600;
+}
+
+.red {
+  color: #da4453;
+  font-weight: 600;
+}
+
 td,
 th {
   border: 0px solid #e0e0e0;
@@ -185,7 +195,7 @@ header ul li {
   justify-content: center;
   align-items: center;
   top: 0;
-  content: "Student Manager";
+  content: "Student Info Tracker";
   font-size: 70px;
   font-weight: 600;
   color: #e8edf5;
@@ -196,11 +206,9 @@ header ul li {
 }
 
 .login-box {
-  /* background: #f5f7fa; */
   width: 30vw;
   margin: 0 auto;
   padding: 30px;
-  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); */
   border-radius: 15px;
 }
 

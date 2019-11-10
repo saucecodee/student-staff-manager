@@ -19,7 +19,6 @@ class AdminContoller {
 
   async signinAdmin(req, res, next) {
     const token = await signinAdmin(req.body);
-    console.log(token)
     res.status(200).send(response("Admin signed in", token));
   }
 
@@ -40,7 +39,7 @@ class AdminContoller {
 
   async editAdmin(req, res, next) {
     const admin = await editAdmin(req.params.adminId, req.body);
-    if (req.params.adminId != req.headers.admin.id) throw new CustomError("Invalid Admin", 401)
+    // if (req.params.adminId != req.headers.admin.id) throw new CustomError("Invalid Admin", 401)
     res.status(200).send(response("Profile edited", admin));
   }
 

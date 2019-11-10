@@ -27,6 +27,12 @@ class StudentService {
     return students;
   }
 
+  async getStudentsVerifiedCount() {
+    const students = await Student.find({feesStatus : "paid"}).count();
+
+    return students;
+  }
+
   async editStudent(_id, data) {
     const student = await Student.findOneAndUpdate({ _id }, data);
 

@@ -10,7 +10,7 @@
 
   <body>
     <header>
-      <span class="brand">Student Manager</span>
+      <span class="brand">Student Info Tracker</span>
       <div style="font-size: 20px;">Welcome, <b>Admin</b></div>
     </header>
 
@@ -59,6 +59,18 @@
             placeholder="Enter date of graduation"
           />
 
+          <label for="feesStatus">School fess status</label>
+          <select id="feesStatus">
+            <option value="paid">Paid</option>
+            <option value="not paid">Not paid</option>
+          </select>
+
+          <label for="gradStatus">Graduation status</label>
+          <select id="gradStatus">
+            <option value="graduated">Graduated</option>
+            <option value="pending">On going</option>
+          </select>
+
           <div style="margin-top: 20px;">
             <button id="addStudent-but" class="but" onclick="addStudent()">ADD</button>
             <button id="editStudent-but" class="but" onclick="editStudent()">EDIT</button>
@@ -74,6 +86,9 @@
         <ul>
           <a href="/student">
             <li class="active">Overview</li>
+          </a>
+          <a href="/student/admin">
+            <li>Admins</li>
           </a>
           <a href="/student/login">
             <li>Log out</li>
@@ -94,8 +109,8 @@
             <h1 id="noOfAdmins">0</h1>
           </div>
           <div class="box">
-            <p>No of students</p>
-            <h1>345</h1>
+            <p>No of verified students</p>
+            <h1 id="noOfVerifiedStudent">0</h1>
           </div>
         </div>
 
@@ -110,6 +125,8 @@
                 <th>Year of Entry</th>
                 <th>Year of Grad</th>
                 <th>Level</th>
+                <th>Fees status</th>
+                <th>Gradc status</th>
               </tr>
             </thead>
             <tbody id="students-table">  </tbody>

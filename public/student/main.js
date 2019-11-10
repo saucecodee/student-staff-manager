@@ -8,12 +8,14 @@ function init() {
      const path = window.location.pathname;
      if (path == "/student/") {
           showStudents();
+     } else if (path == "/student/admin") {
+          showAdmins();
      } else {
           console.log("nothing");
      }
 
-     let cart = JSON.parse(localStorage.getItem("cart")) || [];
      localStorage.setItem("studentId", "");
+     localStorage.setItem("adminId", "");
 }
 window.onload = init;
 
@@ -73,13 +75,76 @@ async function addStudent() {
 async function getCount() {
      let student = await fetch(url + "students/count").then(data => data.json());
      let admin = await fetch(url + "admins/count").then(data => data.json());
-     
+
      document.querySelector("#noOfAdmins").innerHTML = admin.data
      document.querySelector("#noOfStudents").innerHTML = student.data
 }
 
 //////////////////////////////////////////////////////////////////
-//        Helpers
+//        Admin CRUD
+//////////////////////////////////////////////////////////////////
+
+async function getAdmins() {
+     let admins = await fetch(url + "admins").then(data => data.json());
+     return admins;
+}
+
+async function getAdmin(id) {
+     let admin = await fetch(url + "admins/" + id).then(data => data.json());
+     return admin;
+}
+
+async function deleteAdmin() {
+     modalLoader.display = "flex"
+     const id = localStorage.getItem("adminId");
+     await fetch(url + "admins/" + id, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" }
+     });
+     closeAdminModal()
+     showAdmins()
+     modalLoader.display = "none"
+}
+
+async function editAdmin() {
+     modalLoader.display = "flex"
+     const id = localStorage.getItem("adminId");
+     let admin = getAdminFields();
+     await fetch(url + "admins/" + id, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(admin)
+     });
+     populateAdminFields(admin)
+     showAdmins()
+     modalLoader.display = "none"
+}
+
+async function addAdmin() {
+     modalLoader.display = "flex"
+     let admin = getAdminFields();
+     admin = await fetch(url + "admins", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(admin)
+     });
+     closeAdminModal()
+     showAdmins()
+     modalLoader.display = "none"
+}
+
+async function getCount() {
+     let student = await fetch(url + "students/count").then(data => data.json());
+     let verifiedStudent = await fetch(url + "students/verified-count").then(data => data.json());
+     let admin = await fetch(url + "admins/count").then(data => data.json());
+
+     document.querySelector("#noOfAdmins").innerHTML = admin.data
+     document.querySelector("#noOfVerifiedStudent").innerHTML = verifiedStudent.data
+     document.querySelector("#noOfStudents").innerHTML = student.data
+}
+
+//////////////////////////////////////////////////////////////////
+//        Student Helpers
 //////////////////////////////////////////////////////////////////
 
 function getFields() {
@@ -92,6 +157,8 @@ function getFields() {
      record.department = document.querySelector("#department").value;
      record.yearOfEntry = document.querySelector("#yearOfEntry").value;
      record.yearOfGrad = document.querySelector("#yearOfGrad").value;
+     record.feesStatus = document.querySelector("#feesStatus").value;
+     record.gradStatus = document.querySelector("#gradStatus").value;
 
      return record;
 }
@@ -104,10 +171,86 @@ function populateFields(record) {
      document.querySelector("#department").value = record.department;
      document.querySelector("#yearOfEntry").value = record.yearOfEntry;
      document.querySelector("#yearOfGrad").value = record.yearOfGrad;
+     document.querySelector("#feesStatus").value = record.feesStatus;
+     document.querySelector("#gradStatus").value = record.gradStatus;
 }
 
 //////////////////////////////////////////////////////////////////
-//        implement CRUD
+//        Admin Helpers
+//////////////////////////////////////////////////////////////////
+
+function getAdminFields() {
+     let record = {};
+
+     record.name = document.querySelector("#name").value;
+     record.email = document.querySelector("#email").value;
+     record.password = document.querySelector("#password").value;
+     record.canEdit = document.querySelector("#canEdit").canEdit;
+
+     return record;
+}
+
+function populateAdminFields(record) {
+     document.querySelector("#name").value = record.name;
+     document.querySelector("#email").value = record.email;
+     document.querySelector("#password").value = record.password;
+     document.querySelector("#canEdit").value = record.canEdit;
+}
+
+//////////////////////////////////////////////////////////////////
+//        implement admin CRUD
+//////////////////////////////////////////////////////////////////
+
+async function showAdmins() {
+     console.log("hryyy 888")
+     mainLoader.display = "block";
+     let adminDivs = "";
+     const admins = await getAdmins()
+
+     admins.data.forEach((admin) => {
+          adminDivs +=
+               `<tr onclick="showAdminModal('${admin._id}')">
+                    <td>${admin.name}</td>
+                    <td>${admin.email}</td>
+                    <td>${admin.canEdit}</td>
+               </tr>`;
+     });
+
+     document.querySelector("#admins-table").innerHTML = adminDivs;
+     mainLoader.display = "none"
+}
+
+async function showAdminModal(id) {
+     document.querySelector("#modal-bg").style.display = "flex";
+
+     if (id) {
+          modalLoader.display = "flex";
+          document.querySelector("#addAdmin-but").style.display = "none";
+          localStorage.setItem("adminId", id);
+          const admin = await getAdmin(id);
+          populateAdminFields(admin.data);
+          modalLoader.display = "none";
+     } else {
+          document.querySelector("#editAdmin-but").style.display = "none";
+          document.querySelector("#deleteAdmin-but").style.display = "none";
+          localStorage.setItem("adminId", "");
+          document.querySelector("#name").value = "";
+          document.querySelector("#email").value = "";
+          document.querySelector("#password").value = "";
+          document.querySelector("#canEdit").value = "";
+     }
+}
+
+function closeAdminModal() {
+     document.querySelector("#modal-bg").style.display = "none";
+     localStorage.setItem("adminId", "");
+     document.querySelector("#addAdmin-but").style.display = "inline-block";
+     document.querySelector("#editAdmin-but").style.display = "inline-block";
+     document.querySelector("#deleteAdmin-but").style.display = "inline-block";
+}
+
+//////////////////////////////////////////////////////////////////
+//        implement Student CRUD
 //////////////////////////////////////////////////////////////////
 
 async function showStudents() {
@@ -125,6 +268,8 @@ async function showStudents() {
           <td>${student.yearOfEntry}</td>
           <td>${student.yearOfGrad}</td>
           <td>${(parseInt(student.yearOfGrad) - parseInt(student.yearOfEntry)) * 100}</td>
+          <td class="${student.feesStatus == 'paid' ? 'green' : 'red'}"> ${student.feesStatus}</td>
+          <td class="${student.gradStatus == 'graduated' ? 'green' : 'red'}"> ${student.gradStatus}</td>
           </tr>`;
      });
 
@@ -154,6 +299,8 @@ async function showStudentModal(id) {
           document.querySelector("#department").value = "";
           document.querySelector("#yearOfEntry").value = "";
           document.querySelector("#yearOfGrad").value = "";
+          document.querySelector("#feesStatus").value = "";
+          document.querySelector("#gradStatus").value = "";
      }
 }
 
@@ -185,4 +332,3 @@ async function login() {
 
      if (result.status == 200) window.location.replace("/student/");
 }
-

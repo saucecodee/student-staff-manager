@@ -3,8 +3,12 @@ const path = require('path');
 
 module.exports = function() {
 
-  router.get("/all-students", (req, res) => {
-    res.status(200).sendFile(path.resolve("public/student/students.html"));
+  router.get("/", (req, res) => {
+    res.status(200).sendFile(path.resolve("public/student/"));
+  });
+
+  router.get("/admin", (req, res) => {
+    res.status(200).sendFile(path.resolve("public/student/admin.html"));
   });
 
   router.get("/login", (req, res) => {
