@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const {canEdit} = require('../../middlewares/auth')
 const {
   createStudent,
   getStudents,
@@ -10,13 +11,13 @@ const {
 } = require('../../controllers/studentController');
 
 module.exports = function () {
-  router.post('/', createStudent);
+  router.post('/', canEdit, createStudent);
   router.get('/', getStudents);
   router.get('/count', getStudentsCount);
   router.get('/verified-count', getStudentsVerifiedCount);
   router.get('/:studentId', getStudent);
-  router.put('/:studentId', editStudent);
-  router.delete('/:studentId', deleteStudent);
+  router.put('/:studentId', canEdit, editStudent);
+  router.delete('/:studentId', canEdit, deleteStudent);
 
   return router;
 };

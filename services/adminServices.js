@@ -20,7 +20,7 @@ class AdminsService {
 
     if (!admin) throw new CustomError("Admin not found", 404);
 
-    if (data.password == admin.password) return true;
+    if (data.password == admin.password) return admin;
   }
 
   async getAdmins() {

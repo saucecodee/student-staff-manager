@@ -1,12 +1,17 @@
 const router = require("express").Router();
+const path = require('path');
 
 module.exports = function(app) {
-  router.get("/test", (req, res) => {
-    res.send("yehh!");
+  router.get("/", (req, res) => {
+    res.status(200).sendFile(path.resolve("public/staff/"));
   });
 
-  router.get("/home", (req, res) => {
-    res.status(200).sendFile(path.resolve("public/index.html"));
+  router.get("/admin", (req, res) => {
+    res.status(200).sendFile(path.resolve("public/staff/admin.html"));
+  });
+
+  router.get("/login", (req, res) => {
+    res.status(200).sendFile(path.resolve("public/staff/login.html"));
   });
 
   return router;

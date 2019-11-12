@@ -16,8 +16,8 @@ const AdminSchema = new Schema(
       required: [true, "password is required"],
     },
     canEdit: {
-      type: Boolean,
-      default: true,
+      type: String,
+      default: "true",
     }
   },
   {

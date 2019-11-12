@@ -1,92 +1,92 @@
 const fileReader = new FileReader();
 const url = "/api/";
-let students = [];
+let staffs = [];
 let modalLoader = document.querySelector("#modal-overlay-loader").style
 let mainLoader = document.querySelector("#main-loader").style
 
 function init() {
      const path = window.location.pathname;
-     if (path == "/student/") {
-          showStudents();
-     } else if (path == "/student/admin") {
+     if (path == "/staff/") {
+          showStaffs();
+     } else if (path == "/staff/admin") {
           showAdmins();
      } else {
           console.log("nothing");
      }
 
-     localStorage.setItem("studentId", "");
+     localStorage.setItem("staffId", "");
      localStorage.setItem("adminId", "");
 }
 window.onload = init;
 
 //////////////////////////////////////////////////////////////////
-//        Student CRUD
+//        Staff CRUD
 //////////////////////////////////////////////////////////////////
 
-async function getStudents() {
-     let students = await fetch(url + "students").then(data => data.json());
-     return students;
+async function getStaffs() {
+     let staffs = await fetch(url + "staffs").then(data => data.json());
+     return staffs;
 }
 
-async function getStudent(id) {
-     let student = await fetch(url + "students/" + id).then(data => data.json());
-     return student;
+async function getStaff(id) {
+     let staff = await fetch(url + "staffs/" + id).then(data => data.json());
+     return staff;
 }
 
-async function deleteStudent() {
+async function deleteStaff() {
      modalLoader.display = "flex"
-     const id = localStorage.getItem("studentId");
-     await fetch(url + "students/" + id, {
+     const id = localStorage.getItem("staffId");
+     await fetch(url + "staffs/" + id, {
           method: "DELETE",
-          headers: { 
+          headers: {
                "Content-Type": "application/json",
-               "token": localStorage.getItem("admin") 
+               "token": localStorage.getItem("admin")
           }
      });
      closeModal()
-     showStudents()
+     showStaffs()
      modalLoader.display = "none"
 }
 
-async function editStudent() {
+async function editStaff() {
      modalLoader.display = "flex"
-     const id = localStorage.getItem("studentId");
-     let student = getFields();
-     await fetch(url + "students/" + id, {
+     const id = localStorage.getItem("staffId");
+     let staff = getFields();
+     await fetch(url + "staffs/" + id, {
           method: "PUT",
-          headers: { 
+          headers: {
                "Content-Type": "application/json",
                "token": localStorage.getItem("admin")
-           },
-          body: JSON.stringify(student)
+          },
+          body: JSON.stringify(staff)
      });
-     populateFields(student)
-     showStudents()
+     populateFields(staff)
+     showStaffs()
      modalLoader.display = "none"
 }
 
-async function addStudent() {
+async function addStaff() {
      modalLoader.display = "flex"
-     let student = getFields();
-     student = await fetch(url + "students", {
+     let staff = getFields();
+     staff = await fetch(url + "staffs", {
           method: "POST",
           headers: {
                "Content-Type": "application/json",
                "token": localStorage.getItem("admin")
           },
-          body: JSON.stringify(student)
+          body: JSON.stringify(staff)
      });
      closeModal()
-     showStudents()
+     showStaffs()
      modalLoader.display = "none"
 }
 
 async function getCount() {
-     let student = await fetch(url + "students/count").then(data => data.json());
+     let staff = await fetch(url + "staffs/count").then(data => data.json());
      let admin = await fetch(url + "admins/count").then(data => data.json());
 
      document.querySelector("#noOfAdmins").innerHTML = admin.data
-     document.querySelector("#noOfStudents").innerHTML = student.data
+     document.querySelector("#noOfStaffs").innerHTML = staff.data
 }
 
 //////////////////////////////////////////////////////////////////
@@ -108,7 +108,10 @@ async function deleteAdmin() {
      const id = localStorage.getItem("adminId");
      await fetch(url + "admins/" + id, {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" }
+          headers: {
+               "Content-Type": "application/json",
+               "token": localStorage.getItem("admin")
+          }
      });
      closeAdminModal()
      showAdmins()
@@ -121,7 +124,10 @@ async function editAdmin() {
      let admin = getAdminFields();
      await fetch(url + "admins/" + id, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+               "Content-Type": "application/json",
+               "token": localStorage.getItem("admin")
+          },
           body: JSON.stringify(admin)
      });
      populateAdminFields(admin)
@@ -134,7 +140,10 @@ async function addAdmin() {
      let admin = getAdminFields();
      admin = await fetch(url + "admins", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+               "Content-Type": "application/json",
+               "token": localStorage.getItem("admin")
+          },
           body: JSON.stringify(admin)
      });
      closeAdminModal()
@@ -143,45 +152,41 @@ async function addAdmin() {
 }
 
 async function getCount() {
-     let student = await fetch(url + "students/count").then(data => data.json());
-     let verifiedStudent = await fetch(url + "students/verified-count").then(data => data.json());
+     let staff = await fetch(url + "staffs/count").then(data => data.json());
+     let verifiedStaff = await fetch(url + "staffs/verified-count").then(data => data.json());
      let admin = await fetch(url + "admins/count").then(data => data.json());
 
      document.querySelector("#noOfAdmins").innerHTML = admin.data || 0
-     document.querySelector("#noOfVerifiedStudent").innerHTML = verifiedStudent.data || 0
-     document.querySelector("#noOfStudents").innerHTML = student.data || 0
+     document.querySelector("#noOfVerifiedStaff").innerHTML = verifiedStaff.data || 0
+     document.querySelector("#noOfStaffs").innerHTML = staff.data || 0
 }
 
 //////////////////////////////////////////////////////////////////
-//        Student Helpers
+//        Staff Helpers
 //////////////////////////////////////////////////////////////////
 
 function getFields() {
      let record = {};
 
      record.name = document.querySelector("#name").value;
-     record.regNo = document.querySelector("#regNo").value;
+     record.phone = document.querySelector("#phone").value;
      record.email = document.querySelector("#email").value;
-     record.faculty = document.querySelector("#faculty").value;
-     record.department = document.querySelector("#department").value;
-     record.yearOfEntry = document.querySelector("#yearOfEntry").value;
-     record.yearOfGrad = document.querySelector("#yearOfGrad").value;
-     record.feesStatus = document.querySelector("#feesStatus").value;
-     record.gradStatus = document.querySelector("#gradStatus").value;
+     record.address = document.querySelector("#address").value;
+     record.unit = document.querySelector("#unit").value;
+     record.employmentStatus = document.querySelector("#employmentStatus").value;
+     record.level = document.querySelector("#level").value;
 
      return record;
 }
 
 function populateFields(record) {
      document.querySelector("#name").value = record.name;
-     document.querySelector("#regNo").value = record.regNo;
+     document.querySelector("#phone").value = record.phone;
      document.querySelector("#email").value = record.email;
-     document.querySelector("#faculty").value = record.faculty;
-     document.querySelector("#department").value = record.department;
-     document.querySelector("#yearOfEntry").value = record.yearOfEntry;
-     document.querySelector("#yearOfGrad").value = record.yearOfGrad;
-     document.querySelector("#feesStatus").value = record.feesStatus;
-     document.querySelector("#gradStatus").value = record.gradStatus;
+     document.querySelector("#address").value = record.address;
+     document.querySelector("#unit").value = record.unit;
+     document.querySelector("#employmentStatus").value = record.employmentStatus;
+     document.querySelector("#level").value = record.level;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -194,7 +199,7 @@ function getAdminFields() {
      record.name = document.querySelector("#name").value;
      record.email = document.querySelector("#email").value;
      record.password = document.querySelector("#password").value;
-     record.canEdit = document.querySelector("#canEdit").canEdit;
+     record.canEdit = document.querySelector("#canEdit").value;
 
      return record;
 }
@@ -211,7 +216,6 @@ function populateAdminFields(record) {
 //////////////////////////////////////////////////////////////////
 
 async function showAdmins() {
-     console.log("hryyy 888")
      mainLoader.display = "block";
      let adminDivs = "";
      const admins = await getAdmins()
@@ -221,7 +225,7 @@ async function showAdmins() {
                `<tr onclick="showAdminModal('${admin._id}')">
                     <td>${admin.name}</td>
                     <td>${admin.email}</td>
-                    <td>${admin.canEdit}</td>
+                    <td class="${admin.canEdit == 'true' ? 'green' : 'red'}">${admin.canEdit}</td>
                </tr>`;
      });
 
@@ -259,67 +263,62 @@ function closeAdminModal() {
 }
 
 //////////////////////////////////////////////////////////////////
-//        implement Student CRUD
+//        implement Staff CRUD
 //////////////////////////////////////////////////////////////////
 
-async function showStudents() {
+async function showStaffs() {
      mainLoader.display = "block";
-     let studentDivs = "";
-     const students = await getStudents()
+     let staffDivs = "";
+     const staffs = await getStaffs()
 
-     students.data.forEach((student, index) => {
-          studentDivs +=
-               `<tr onclick="showStudentModal('${student._id}')">
-          <td>${student.name}</td>
-          <td>${student.regNo}</td>
-          <td>${student.department}</td>
-          <td>${student.faculty}</td>
-          <td>${student.yearOfEntry}</td>
-          <td>${student.yearOfGrad}</td>
-          <td>${(parseInt(student.yearOfGrad) - parseInt(student.yearOfEntry)) * 100}</td>
-          <td><img src="img/tick.png" alt="" /></td>
-          <td class="${student.feesStatus == 'paid' ? 'green' : 'red'}"> ${student.feesStatus}</td>
-          <td class="${student.gradStatus == 'graduated' ? 'green' : 'red'}"> ${student.gradStatus}</td>
+     staffs.data.forEach((staff, index) => {
+          staffDivs +=
+               `<tr onclick="showStaffModal('${staff._id}')">
+          <td>${staff.name}</td>
+          <td>${staff.phone}</td>
+          <td>${staff.unit}</td>
+          <td>${staff.address}</td>
+          <td>${staff.unit}</td>
+          <td class="${staff.employmentStatus == 'employed' ? 'green' : 'red'}"> ${staff.employmentStatus}</td>
+          <td>${staff.level}</td>
           </tr>`;
      });
 
-     document.querySelector("#students-table").innerHTML = studentDivs;
+     document.querySelector("#staffs-table").innerHTML = staffDivs;
      getCount()
      mainLoader.display = "none"
 }
 
-async function showStudentModal(id) {
+async function showStaffModal(id) {
      document.querySelector("#modal-bg").style.display = "flex";
 
      if (id) {
           modalLoader.display = "flex";
-          document.querySelector("#addStudent-but").style.display = "none";
-          localStorage.setItem("studentId", id);
-          const student = await getStudent(id);
-          populateFields(student.data);
+          document.querySelector("#addStaff-but").style.display = "none";
+          localStorage.setItem("staffId", id);
+          const staff = await getStaff(id);
+          populateFields(staff.data);
           modalLoader.display = "none";
      } else {
-          document.querySelector("#editStudent-but").style.display = "none";
-          document.querySelector("#deleteStudent-but").style.display = "none";
-          localStorage.setItem("studentId", "");
+          document.querySelector("#editStaff-but").style.display = "none";
+          document.querySelector("#deleteStaff-but").style.display = "none";
+          localStorage.setItem("staffId", "");
           document.querySelector("#name").value = "";
-          document.querySelector("#regNo").value = "";
+          document.querySelector("#phone").value = "";
           document.querySelector("#email").value = "";
-          document.querySelector("#faculty").value = "";
-          document.querySelector("#department").value = "";
-          document.querySelector("#yearOfEntry").value = "";
-          document.querySelector("#yearOfGrad").value = "";
-          document.querySelector("#feesStatus").value = "";
-          document.querySelector("#gradStatus").value = "";
+          document.querySelector("#address").value = "";
+          document.querySelector("#unit").value = "";
+          document.querySelector("#employmentStatus").value = "";
+          document.querySelector("#level").value = "";
      }
 }
 
 function closeModal() {
      document.querySelector("#modal-bg").style.display = "none";
-     localStorage.setItem("studentId", "");
-     document.querySelector("#addStudent-but").style.display = "inline-block";
-     document.querySelector("#editStudent-but").style.display = "inline-block";
-     document.querySelector("#deleteStudent-but").style.display = "inline-block";
+     localStorage.setItem("staffId", "");
+     document.querySelector("#addStaff-but").style.display = "inline-block";
+     document.querySelector("#editStaff-but").style.display = "inline-block";
+     document.querySelector("#deleteStaff-but").style.display = "inline-block";
 }
 
 //////////////////////////////////////////////////////////////////
@@ -340,5 +339,5 @@ async function login() {
 
      localStorage.setItem("admin", result.data._id);
 
-     if (result.success == true) window.location.replace("/student/");
+     if (result.success == true) window.location.replace("/staff/");
 }

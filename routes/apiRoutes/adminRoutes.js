@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const {canEdit} = require('../../middlewares/auth')
 const {
   createAdmin,
   signinAdmin,
@@ -10,13 +11,13 @@ const {
 } = require("../../controllers/adminController");
 
 module.exports = function () {
-  router.post("/", createAdmin);
+  router.post("/", canEdit, createAdmin);
   router.post("/signin", signinAdmin);
   router.get("/", getAdmins);
   router.get("/count", getAdminsCount);
   router.get("/:adminId", getAdmin);
-  router.put("/:adminId", editAdmin);
-  router.delete("/:adminId", deleteAdmin);
+  router.put("/:adminId", canEdit, editAdmin);
+  router.delete("/:adminId", canEdit, deleteAdmin);
 
   return router;
 };

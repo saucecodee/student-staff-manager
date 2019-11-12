@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const adminRoutes = require("./adminRoutes");
 const studentRoutes = require("./studentRoutes");
+const staffRoutes = require("./staffRoutes");
 
 module.exports = function(app) {
   router.get("/test", (req, res) => {
@@ -9,6 +10,11 @@ module.exports = function(app) {
   
   router.use("/admins", adminRoutes());
   router.use("/students", studentRoutes());
+  router.use("/staffs", staffRoutes());
+
+  router.get("/", (req, res) => {
+    res.status(200).sendFile(path.resolve("public/"));
+  });
 
   return router;
 };

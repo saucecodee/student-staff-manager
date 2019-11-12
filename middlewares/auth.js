@@ -1,37 +1,17 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/admin");
-const Doctor = require("../models/student");
+const Admin = require("../models/admin");
 const CustomError = require("../helpers/CustomError");
 
-async function isDoctor(req, res, next) {
-  const decoded = await jwt.verify(req.header.token, "healthie");
+async function canEdit(req, res, next) {
+  console.log(req.headers.token)
+  const admin = await Admin.findOne({ _id: req.headers.token });
 
-  const doctor = await Doctor.findOne({ _id: decoded.id });
+  if (!admin) throw new CustomError("Admin dosen't exist");
 
-  if (!doctor) throw new CustomError("Doctor dosen't exist");
-
-  if (doctor.role == "doctor") {
-    req.headers.doctor = decoded;
+  if (admin.canEdit == "true") {
     next();
   } else {
     throw new CustomError("Unauthorized user", 401);
   }
 }
 
-async function isUser(req, res, next) {
-  const decoded = await jwt.verify(req.headers.authtoken, "healthie");
-
-  const user = await User.findOne({ _id: decoded.id });
-
-  if (!user) throw new CustomError("User dosen't exist");
-
-  if (decoded.role == "user") {
-    req.headers.user = decoded;
-    next();
-  } else {
-    throw new CustomError("Unauthorized user", 401);
-  }
-}
-
-module.exports.isDoctor = isDoctor;
-module.exports.isUser = isUser;
+module.exports.canEdit = canEdit;
