@@ -154,7 +154,7 @@ async function addAdmin() {
 async function getCount() {
      let staff = await fetch(url + "staffs/count").then(data => data.json());
      let verifiedStaff = await fetch(url + "staffs/verified-count").then(data => data.json());
-     let admin = await fetch(url + "admins/count").then(data => data.json());
+     let admin = await fetch(url + "admin/count").then(data => data.json());
 
      document.querySelector("#noOfAdmins").innerHTML = admin.data || 0
      document.querySelector("#noOfVerifiedStaff").innerHTML = verifiedStaff.data || 0
