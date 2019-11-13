@@ -230,7 +230,7 @@ async function showAdmins() {
                `<tr onclick="showAdminModal('${admin._id}')">
                     <td>${admin.name}</td>
                     <td>${admin.email}</td>
-                    <td>${admin.canEdit}</td>
+                    <td class="${admin.canEdit == 'true' ? 'green' : 'red'}">${admin.canEdit}</td>
                </tr>`;
      });
 

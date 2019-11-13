@@ -94,19 +94,19 @@ async function getCount() {
 //////////////////////////////////////////////////////////////////
 
 async function getAdmins() {
-     let admins = await fetch(url + "admins").then(data => data.json());
+     let admins = await fetch(url + "admin").then(data => data.json());
      return admins;
 }
 
 async function getAdmin(id) {
-     let admin = await fetch(url + "admins/" + id).then(data => data.json());
+     let admin = await fetch(url + "admin/" + id).then(data => data.json());
      return admin;
 }
 
 async function deleteAdmin() {
      modalLoader.display = "flex"
      const id = localStorage.getItem("adminId");
-     await fetch(url + "admins/" + id, {
+     await fetch(url + "admin/" + id, {
           method: "DELETE",
           headers: {
                "Content-Type": "application/json",
@@ -122,7 +122,7 @@ async function editAdmin() {
      modalLoader.display = "flex"
      const id = localStorage.getItem("adminId");
      let admin = getAdminFields();
-     await fetch(url + "admins/" + id, {
+     await fetch(url + "admin/" + id, {
           method: "PUT",
           headers: {
                "Content-Type": "application/json",
@@ -138,7 +138,7 @@ async function editAdmin() {
 async function addAdmin() {
      modalLoader.display = "flex"
      let admin = getAdminFields();
-     admin = await fetch(url + "admins", {
+     admin = await fetch(url + "admin", {
           method: "POST",
           headers: {
                "Content-Type": "application/json",
@@ -181,8 +181,8 @@ function getFields() {
 
 function populateFields(record) {
      document.querySelector("#name").value = record.name;
-     document.querySelector("#phone").value = record.phone;
      document.querySelector("#email").value = record.email;
+     document.querySelector("#phone").value = record.phone;
      document.querySelector("#address").value = record.address;
      document.querySelector("#unit").value = record.unit;
      document.querySelector("#employmentStatus").value = record.employmentStatus;
@@ -274,14 +274,14 @@ async function showStaffs() {
      staffs.data.forEach((staff, index) => {
           staffDivs +=
                `<tr onclick="showStaffModal('${staff._id}')">
-          <td>${staff.name}</td>
-          <td>${staff.phone}</td>
-          <td>${staff.unit}</td>
-          <td>${staff.address}</td>
-          <td>${staff.unit}</td>
-          <td class="${staff.employmentStatus == 'employed' ? 'green' : 'red'}"> ${staff.employmentStatus}</td>
-          <td>${staff.level}</td>
-          </tr>`;
+                    <td>${staff.name}</td>
+                    <td>${staff.email}</td>
+                    <td>${staff.phone}</td>
+                    <td>${staff.address}</td>
+                    <td>${staff.unit}</td>
+                    <td class="${staff.employmentStatus == 'employed' ? 'green' : 'red'}"> ${staff.employmentStatus}</td>
+                    <td>${staff.level}</td>
+               </tr>`;
      });
 
      document.querySelector("#staffs-table").innerHTML = staffDivs;

@@ -1,4 +1,4 @@
-const Admin = require("../models/admin").admin;
+const Admin = require("../models/admin").admin2;
 const CustomError = require("../helpers/CustomError");
 
 class AdminsService {
