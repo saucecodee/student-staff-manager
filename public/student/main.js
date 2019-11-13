@@ -38,9 +38,9 @@ async function deleteStudent() {
      const id = localStorage.getItem("studentId");
      await fetch(url + "students/" + id, {
           method: "DELETE",
-          headers: { 
+          headers: {
                "Content-Type": "application/json",
-               "token": localStorage.getItem("admin") 
+               "token": localStorage.getItem("admin")
           }
      });
      closeModal()
@@ -54,10 +54,10 @@ async function editStudent() {
      let student = getFields();
      await fetch(url + "students/" + id, {
           method: "PUT",
-          headers: { 
+          headers: {
                "Content-Type": "application/json",
                "token": localStorage.getItem("admin")
-           },
+          },
           body: JSON.stringify(student)
      });
      populateFields(student)
@@ -108,7 +108,10 @@ async function deleteAdmin() {
      const id = localStorage.getItem("adminId");
      await fetch(url + "admins/" + id, {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" }
+          headers: {
+               "Content-Type": "application/json",
+               "token": localStorage.getItem("admin")
+          }
      });
      closeAdminModal()
      showAdmins()
@@ -121,7 +124,10 @@ async function editAdmin() {
      let admin = getAdminFields();
      await fetch(url + "admins/" + id, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+               "Content-Type": "application/json",
+               "token": localStorage.getItem("admin")
+          },
           body: JSON.stringify(admin)
      });
      populateAdminFields(admin)
@@ -134,7 +140,10 @@ async function addAdmin() {
      let admin = getAdminFields();
      admin = await fetch(url + "admins", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+               "Content-Type": "application/json",
+               "token": localStorage.getItem("admin")
+          },
           body: JSON.stringify(admin)
      });
      closeAdminModal()
