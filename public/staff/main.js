@@ -331,7 +331,7 @@ async function login() {
      const email = document.querySelector("#admin-email").value
      const password = document.querySelector("#admin-password").value
 
-     let result = await fetch(url + "admins/" + "signin", {
+     let result = await fetch(url + "admin/" + "signin", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })

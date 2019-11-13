@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {canEdit} = require('../../middlewares/auth')
+const {canEdit} = require('../../middlewares/auth2')
 const {
   createStaff,
   getStaffs,
