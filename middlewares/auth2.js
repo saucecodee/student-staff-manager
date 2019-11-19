@@ -4,7 +4,7 @@ const CustomError = require("../helpers/CustomError");
 async function canEdit(req, res, next) {
   console.log(req.headers.token)
   const admin = await Admin.findOne({ _id: req.headers.token });
-
+ console.log(admin, "fjfjb===============")
   if (!admin) throw new CustomError("Admin dosen't exist");
 
   if (admin.canEdit == "true") {

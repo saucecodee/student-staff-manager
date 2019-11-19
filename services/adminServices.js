@@ -42,6 +42,8 @@ class AdminsService {
       new: true,
     });
 
+    console.log(data)
+
     if (!admin) throw new CustomError("Admin dosen't exist", 404);
 
     return admin;

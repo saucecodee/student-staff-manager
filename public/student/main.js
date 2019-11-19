@@ -138,6 +138,7 @@ async function editAdmin() {
 async function addAdmin() {
      modalLoader.display = "flex"
      let admin = getAdminFields();
+     console.log(admin)
      admin = await fetch(url + "admins", {
           method: "POST",
           headers: {
@@ -203,7 +204,9 @@ function getAdminFields() {
      record.name = document.querySelector("#name").value;
      record.email = document.querySelector("#email").value;
      record.password = document.querySelector("#password").value;
-     record.canEdit = document.querySelector("#canEdit").canEdit;
+     record.canEdit = document.querySelector("#canEdit").value;
+
+     console.log(record)
 
      return record;
 }
@@ -220,7 +223,6 @@ function populateAdminFields(record) {
 //////////////////////////////////////////////////////////////////
 
 async function showAdmins() {
-     console.log("hryyy 888")
      mainLoader.display = "block";
      let adminDivs = "";
      const admins = await getAdmins()
