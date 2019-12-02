@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const StaffSchema = new Schema(
   {
-    imgUrl: {
+    img: {
       type: String,
     },
     name: {

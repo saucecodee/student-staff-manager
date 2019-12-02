@@ -1,6 +1,7 @@
 const fileReader = new FileReader();
 const url = "/api/";
 let staffs = [];
+let oneStaff
 let modalLoader = document.querySelector("#modal-overlay-loader").style
 let mainLoader = document.querySelector("#main-loader").style
 
@@ -52,14 +53,24 @@ async function editStaff() {
      modalLoader.display = "flex"
      const id = localStorage.getItem("staffId");
      let staff = getFields();
-     await fetch(url + "staffs/" + id, {
-          method: "PUT",
-          headers: {
-               "Content-Type": "application/json",
-               "token": localStorage.getItem("admin")
-          },
-          body: JSON.stringify(staff)
-     });
+
+     fileReader.onload = async function () {
+          staff.img = fileReader.result || oneStaff.data.img;
+          await fetch(url + "staffs/" + id, {
+               method: "PUT",
+               headers: {
+                    "Content-Type": "application/json",
+                    "token": localStorage.getItem("admin")
+               },
+               body: JSON.stringify(staff)
+          });
+     }
+
+     if (staff.img) {
+          fileReader.readAsDataURL(staff.img)
+          console.log("yehh")
+     }
+
      populateFields(staff)
      showStaffs()
      modalLoader.display = "none"
@@ -68,14 +79,24 @@ async function editStaff() {
 async function addStaff() {
      modalLoader.display = "flex"
      let staff = getFields();
-     staff = await fetch(url + "staffs", {
-          method: "POST",
-          headers: {
-               "Content-Type": "application/json",
-               "token": localStorage.getItem("admin")
-          },
-          body: JSON.stringify(staff)
-     });
+
+     fileReader.onload = async function () {
+          staff.img = fileReader.result
+          staff = await fetch(url + "staffs", {
+               method: "POST",
+               headers: {
+                    "Content-Type": "application/json",
+                    "token": localStorage.getItem("admin")
+               },
+               body: JSON.stringify(staff)
+          });
+     }
+
+     if (staff.img) {
+          fileReader.readAsDataURL(staff.img)
+          console.log("yehh")
+     }
+
      closeModal()
      showStaffs()
      modalLoader.display = "none"
@@ -168,6 +189,7 @@ async function getCount() {
 function getFields() {
      let record = {};
 
+     record.img = document.querySelector("#img").files[0]
      record.name = document.querySelector("#name").value;
      record.phone = document.querySelector("#phone").value;
      record.email = document.querySelector("#email").value;
@@ -180,6 +202,7 @@ function getFields() {
 }
 
 function populateFields(record) {
+     document.querySelector("#modalImg").setAttribute("src", `${record.img}`);
      document.querySelector("#name").value = record.name;
      document.querySelector("#email").value = record.email;
      document.querySelector("#phone").value = record.phone;
@@ -274,7 +297,7 @@ async function showStaffs() {
      staffs.data.forEach((staff, index) => {
           staffDivs +=
                `<tr onclick="showStaffModal('${staff._id}')">
-                    <td>${staff.name}</td>
+                    <td> <img src="${staff.img}"> ${staff.name}</td>
                     <td>${staff.email}</td>
                     <td>${staff.phone}</td>
                     <td>${staff.address}</td>
@@ -296,8 +319,8 @@ async function showStaffModal(id) {
           modalLoader.display = "flex";
           document.querySelector("#addStaff-but").style.display = "none";
           localStorage.setItem("staffId", id);
-          const staff = await getStaff(id);
-          populateFields(staff.data);
+          oneStaff = await getStaff(id);
+          populateFields(oneStaff.data);
           modalLoader.display = "none";
      } else {
           document.querySelector("#editStaff-but").style.display = "none";

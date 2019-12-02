@@ -11,7 +11,7 @@
   <body>
     <header>
       <span class="brand">Staff Directory</span>
-      <div style="font-size: 20px;">Welcome, <b>Admin</b></div>
+      <div style="font-size: 20px;">Welcome, <b>Administrator</b></div>
     </header>
 
     <div id="modal-bg">
@@ -19,6 +19,11 @@
         <h2>Staff Information</h2>
         <div id="modal-overlay-loader"><img src="img/spinner.gif" alt="" /></div>
         <div class="cart-modal-body">
+
+          <img src="" id="modalImg">
+
+          <label for="img">Image</label>
+          <input type="file" id="img" placeholder="Upload image" accept="image/*"/>
 
           <label for="name">Name</label>
           <input type="text" id="name" placeholder="Enter name" />
